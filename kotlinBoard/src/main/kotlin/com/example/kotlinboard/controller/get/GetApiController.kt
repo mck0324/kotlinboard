@@ -1,6 +1,7 @@
 package com.example.kotlinboard.controller.get
 
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
@@ -20,5 +21,9 @@ class GetApiController {
         return "request-mapping"
     }
 
-    
+    @GetMapping("/get-mapping/path-variable/{name}/{age}") //localhost/api/get-mapping/path-variable/{name}
+    fun pathVariable(@PathVariable name: String, @PathVariable age: Int): String {
+        println("${name}, ${age}")
+        return  name+""+age
+    }
 }
