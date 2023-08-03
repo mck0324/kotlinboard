@@ -10,8 +10,10 @@ data class UserResponse (
     @JsonProperty(value = "user")
     var userRequest: MutableList<UserRequest>?=null
 )
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+//@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
 data class Result (
-    var resultCode:String?=null,
-    var resultMessage:String?=null,
+        @JsonProperty("result_code")
+        var resultCode:String?=null,
+        @JsonProperty("result_message")
+        var resultMessage:String?=null,
 )
