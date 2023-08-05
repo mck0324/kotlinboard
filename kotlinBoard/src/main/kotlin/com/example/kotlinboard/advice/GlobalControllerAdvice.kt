@@ -17,6 +17,7 @@ class GlobalControllerAdvice {
 
     @ExceptionHandler(value = [IndexOutOfBoundsException::class])
     fun indexOutOfBoundsException(e : IndexOutOfBoundsException): ResponseEntity<String> {
+        println("Global controller exception handler")
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Index Error")
     }
 }
