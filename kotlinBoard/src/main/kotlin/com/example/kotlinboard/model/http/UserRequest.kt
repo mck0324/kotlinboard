@@ -1,5 +1,6 @@
 package com.example.kotlinboard.model.http
 
+import com.example.kotlinboard.annotation.StringFormatDateTime
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
@@ -37,16 +38,18 @@ data class UserRequest (
         //이렇게해도 되지만 회사마다 정책이 다다르고 매번 이렇게 해줄 수 없기에
         //@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)를 이용
 
+        @field:StringFormatDateTime(pattern = "yyyy-MM-dd HH:mm:ss", message = "날짜 패턴이 올바르지 않습니다.")
         var createdAt:String?=null //yyyy-MM-dd HH:mm:ss ex)2020-10-12 13:00:00
 
-){
-        @AssertTrue(message = "생성일자의 패턴은 yyyy-MM-dd HH:mm:ss 여야 합니다")
-        private fun isValidCreatedAt():Boolean{ //정상true, 비정상 false
-                return try {
-                    parse(this.createdAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                        true
-                } catch (e:Exception) {
-                        false
-                }
-        }
-}
+)
+//{
+//        @AssertTrue(message = "생성일자의 패턴은 yyyy-MM-dd HH:mm:ss 여야 합니다")
+//        private fun isValidCreatedAt():Boolean{ //정상true, 비정상 false
+//                return try {
+//                    parse(this.createdAt, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+//                        true
+//                } catch (e:Exception) {
+//                        false
+//                }
+//        }
+//}
