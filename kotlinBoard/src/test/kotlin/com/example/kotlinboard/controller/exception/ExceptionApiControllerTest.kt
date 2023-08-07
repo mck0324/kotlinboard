@@ -1,5 +1,7 @@
 package com.example.kotlinboard.controller.exception
 
+import com.example.kotlinboard.model.http.UserRequest
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -60,6 +62,62 @@ class ExceptionApiControllerTest {
                 MockMvcResultMatchers.jsonPath("\$.errors[0].field").value("age")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("\$.errors[0].value").value("9")
+        )
+                .andDo(MockMvcResultHandlers.print())
+    }
+    @Test
+    fun postTest() {
+        val userRequest = UserRequest().apply {
+            this.name = "steve"
+            this.age = 10
+            this.address = "서울시 강남구"
+            this.email = "gogle@gmail.com"
+            this.phoneNumber = "010-1111-2222"
+            this.createdAt = "2020-11-11 13:00:00"
+        }
+        val json = jacksonObjectMapper().writeValueAsString(userRequest)
+        println(json)
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/exception")
+                        .content(json)
+                        .contentType("application/json")
+                        .accept("application/json")
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.name").value("steve")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.age").value("10")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.email").value("gogle@gmail.com")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.address").value("서울시 강남구")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.createdAt").value("2020-11-11 13:00:00")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("\$.phoneNumber").value("010-1111-2222")
+        )
+                .andDo(MockMvcResultHandlers.print())
+    }
+    @Test
+    fun postFailTest() {
+        val userRequest = UserRequest().apply {
+            this.name = "steve"
+            this.age = -1
+            this.address = "서울시 강남구"
+            this.email = "gogle@gmail.com"
+            this.phoneNumber = "010-1111-2222"
+            this.createdAt = "2020-11-11 13:00:00"
+        }
+        val json = jacksonObjectMapper().writeValueAsString(userRequest)
+        println(json)
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/exception")
+                        .content(json)
+                        .contentType("application/json")
+                        .accept("application/json")
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest
         )
                 .andDo(MockMvcResultHandlers.print())
     }
